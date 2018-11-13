@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.ChapterDAO">
+
+    <insert id="insert">
+        insert into cmfz_chapter
+        values(#{id},#{title},#{size},#{duration},#{downPath},#{uploadTime},#{album_id})
+    </insert>
+
+    <update id="update">
+        update cmfz_chapter
+        set id=#{id},title=#{title},size=#{size},duration=#{duration},downPath=#{downPath},uploadTime=#{uploadTime},album_id=#{album_id}
+    </update>
+
+    <delete id="delete">
+        delete from cmfz_chapter
+        where id=#{id}
+    </delete>
+
+    <select id="queryByid" resultType="Chapter">
+        select id,title,size,duration,downPath,uploadTime,album_id
+        from cmfz_chapter
+        where id=#{id}
+    </select>
+
+    <select id="total" resultType="Long">
+        select count(id) from cmfz_chapter
+    </select>
+
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AlbumDAO">
+
+    <sql id="aa">
+             a.id a_id,
+              a.title a_title,
+              a.publishDate,
+              a.count,
+              a.coverImg,
+              a.score,
+              a.author,
+              a.broadCast,
+              a.brief,
+              c.id c_id,
+              c.title c_title,
+              c.size,
+              c.duration,
+              c.downPath,
+              c.uploadTime,
+              c.album_id
+        from cmfz_album a left join cmfz_chapter c
+        on c.album_id=a.id
+    </sql>
+
+    <select id="queryAll" resultType="Album">
+        select id,title,publishDate,count,coverImg,score,author,broadCast,brief
+        from cmfz_album
+   </select>
+
+    <resultMap id="bb" type="Album">
+        <id property="id" column="a_id"></id>
+        <result property="title" column="a_title"></result>
+        <result property="publishDate" column="publishDate"></result>
+        <result property="count" column="count"></result>
+        <result property="coverImg" column="coverImg"></result>
+        <result property="score" column="score"></result>
+        <result property="author" column="author"></result>
+        <result property="broadCast" column="broadCast"></result>
+        <result property="brief" column="brief"></result>
+        <collection property="children" ofType="Chapter">
+            <id property="id" column="c_id"></id>
+            <result property="title" column="c_title"></result>
+            <result property="size" column="size"></result>
+            <result property="duration" column="duration"></result>
+            <result property="downPath" column="downPath"></result>
+            <result property="uploadTime" column="uploadTime"></result>
+            <result property="album_id" column="album_id"></result>
+        </collection>
+    </resultMap>
+
+    <insert id="insert">
+        insert into cmfz_album
+        values(#{id},#{title},#{publishDate},#{count},#{coverImg},#{score},
+               #{author},#{broadCast},#{brief})
+    </insert>
+
+    <update id="update">
+        update cmfz_album
+        set title=#{title},publishDate=#{publishDate},
+            count=#{count},coverImg=#{coverImg},
+            coverImg=#{coverImg},score=#{score},
+            author=#{author},broadCast=#{broadCast},
+            brief=#{brief}
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from cmfz_album
+        where id=#{id}
+    </delete>
+
+    <select id="queryPage" resultMap="bb">
+        select <include refid="aa"/>
+        limit #{start},#{rows}
+    </select>
+
+    <select id="queryByid" resultMap="bb">
+        select <include refid="aa"/>
+        where a.id=#{id}
+    </select>
+
+    <select id="total" resultType="Long">
+        select count(id) from cmfz_album
+    </select>
+
+</mapper>

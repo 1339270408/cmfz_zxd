@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+        <!--开启注解式扫描-->
+        <context:component-scan base-package="com.baizhi.service"/>
+
+        <!--引入小配置文件-->
+        <context:property-placeholder location="classpath:JDBC.properties"/>
+
+        <!--创建数据源-->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+            <property name="driverClassName" value="${driver}"/>
+            <property name="url" value="${url}"/>
+            <property name="username" value="${name}"/>
+            <property name="password" value="${password}"/>
+        </bean>
+
+        <!--创建sqlSessionFactory-->
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="typeAliasesPackage" value="com.baizhi.entrty"/>
+            <property name="mapperLocations" value="classpath:com/baizhi/mapper/*.xml"/>
+        </bean>
+
+        <!--创建dao-->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+            <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+            <property name="basePackage" value="com.baizhi.dao"/>
+        </bean>
+
+        <!--创建事务管理器-->
+        <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="dataSource"/>
+        </bean>
+
+        <!--注解式扫描生效-->
+        <tx:annotation-driven/>
+
+</beans>
