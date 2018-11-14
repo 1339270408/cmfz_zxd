@@ -46,9 +46,6 @@ public class UserController {
            return "redirect:/back/user/login.jsp";
        }
 
-    public static void main(String[] args) {
-        System.out.println("aaa");
-        System.out.println("何燕芝");
-    }
+
 
 }
