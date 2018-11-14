@@ -20,8 +20,6 @@ public class UserController {
         return "redirect:/back/user/login.jsp";
     }
 
-
-
        @RequestMapping("/findLogin")
        public String findLogin(User user,HttpServletRequest request){
            try {
@@ -42,7 +40,5 @@ public class UserController {
            userService.motifyUser(user);
            return "redirect:/back/user/login.jsp";
        }
-
-
 
 }
